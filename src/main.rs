@@ -25,7 +25,7 @@ fn main() {
     println!("{}", conn_string);
 
     let manager = PostgresConnectionManager::new(conn_string, TlsMode::None).unwrap();
-    let pool = r2d2::Pool::new(manager).unwrap();
+    let pool = r2d2::Pool::builder().max_size(4).build(manager).unwrap();
     let conn = pool.get().unwrap();
     let cwd:String = env::var("PWD").unwrap();
     let mut server = Nickel::new();
